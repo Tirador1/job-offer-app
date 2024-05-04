@@ -1,19 +1,24 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import logo from '../assets/images/logo.png';
+import { NavLink, useNavigate } from "react-router-dom";
+import logo from "../assets/images/logo.png";
 
 const NavbarUser = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('accesstoken');
-    localStorage.removeItem('role');
-    navigate('/login');
+    sessionStorage.clear();
+    handleSessionClear();
+    navigate("/login");
+  };
+
+  const handleSessionClear = () => {
+    localStorage.removeItem("accesstoken");
+    localStorage.removeItem("role");
   };
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? 'bg-black text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
-      : 'text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2';
+      ? "bg-black text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+      : "text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2";
   return (
     <nav className="bg-indigo-700 border-b border-indigo-500">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -36,10 +41,10 @@ const NavbarUser = () => {
                 <button
                   onClick={handleLogout}
                   style={{
-                    color: 'white',
-                    borderRadius: '5px',
-                    padding: '5px 10px',
-                    cursor: 'pointer',
+                    color: "white",
+                    borderRadius: "5px",
+                    padding: "5px 10px",
+                    cursor: "pointer",
                   }}
                 >
                   Logout

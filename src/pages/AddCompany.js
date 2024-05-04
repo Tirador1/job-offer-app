@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import NavbarHr from '../components/NavbarHr';
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import NavbarHr from "../components/NavbarHr";
+import axios from "axios";
 
 const AddCompany = () => {
-  const [companyName, setCompanyName] = useState('');
-  const [description, setDescription] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [address, setAddress] = useState('');
-  const [numberOfEmployees, setNumberOfEmployees] = useState('');
-  const [companyEmail, setCompanyEmail] = useState('');
+  const [companyName, setCompanyName] = useState("");
+  const [description, setDescription] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [address, setAddress] = useState("");
+  const [numberOfEmployees, setNumberOfEmployees] = useState("");
+  const [companyEmail, setCompanyEmail] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,27 +25,28 @@ const AddCompany = () => {
       numberOfEmployees,
       companyEmail,
     };
+    console.log(newCompany);
 
     try {
       const response = await axios(
-        'http://localhost:5000/companies/createCompany',
+        "http://localhost:5000/companies/createCompany",
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
-            accesstoken: localStorage.getItem('accesstoken'),
+            "Content-Type": "application/json",
+            accesstoken: localStorage.getItem("accesstoken"),
           },
           data: newCompany,
         }
       );
 
-      if (response.status === 201) toast.success('Company Added Successfully');
-      return navigate('/company-hr-dashboard');
+      if (response.status === 201) toast.success("Company Added Successfully");
+      return navigate("/company-hr-dashboard");
     } catch (error) {
       if (error.response.status === 409) {
-        return toast.error('Company already exists please try again');
+        return toast.error("Company already exists please try again");
       } else {
-        return toast.error('Company addition failed, please try again');
+        return toast.error("Company addition failed, please try again");
       }
     }
   };
@@ -177,7 +178,7 @@ const AddCompany = () => {
                   className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                   type="submit"
                 >
-                  Apply for Job
+                  Add Company
                 </button>
               </div>
             </form>

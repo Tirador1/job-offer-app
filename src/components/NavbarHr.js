@@ -1,18 +1,23 @@
-import { NavLink } from 'react-router-dom';
-import logo from '../assets/images/logo.png';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import logo from "../assets/images/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const NavbarHr = () => {
   const navigate = useNavigate();
   const linkClass = ({ isActive }) =>
     isActive
-      ? 'bg-black text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
-      : 'text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2';
+      ? "bg-black text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+      : "text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2";
 
   const handleLogout = () => {
-    localStorage.removeItem('accesstoken');
-    localStorage.removeItem('role');
-    navigate('/login');
+    sessionStorage.clear();
+    handleSessionClear();
+    navigate("/login");
+  };
+
+  const handleSessionClear = () => {
+    localStorage.removeItem("accesstoken");
+    localStorage.removeItem("role");
   };
 
   return (
@@ -39,10 +44,10 @@ const NavbarHr = () => {
                 </NavLink>
                 <button
                   style={{
-                    color: 'white',
-                    borderRadius: '5px',
-                    padding: '5px 10px',
-                    cursor: 'pointer',
+                    color: "white",
+                    borderRadius: "5px",
+                    padding: "5px 10px",
+                    cursor: "pointer",
                   }}
                   onClick={handleLogout}
                 >
