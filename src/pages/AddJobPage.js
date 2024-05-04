@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import NavbarHr from '../components/NavbarHr';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import NavbarHr from "../components/NavbarHr";
+import axios from "axios";
 
 const AddJob = () => {
-  const [jobTitle, setJobTitle] = useState('');
-  const [jobLocation, setJobLocation] = useState('onsite');
-  const [workingTime, setWorkingTime] = useState('full-time');
-  const [seniorityLevel, setSeniorityLevel] = useState('Junior');
-  const [jobDescription, setJobDescription] = useState('');
-  const [salary, setSalary] = useState('');
-  const [technicalSkills, setTechnicalSkills] = useState('');
-  const [softSkills, setSoftSkills] = useState('');
-  const [company, setCompany] = useState('');
+  const [jobTitle, setJobTitle] = useState("");
+  const [jobLocation, setJobLocation] = useState("onsite");
+  const [workingTime, setWorkingTime] = useState("full-time");
+  const [seniorityLevel, setSeniorityLevel] = useState("Junior");
+  const [jobDescription, setJobDescription] = useState("");
+  const [salary, setSalary] = useState("");
+  const [technicalSkills, setTechnicalSkills] = useState("");
+  const [softSkills, setSoftSkills] = useState("");
+  const [company, setCompany] = useState("");
 
   const [companiesName, setCompaniesName] = useState([]);
   let companiesNameRes = [];
@@ -23,12 +23,12 @@ const AddJob = () => {
   const getCompanies = async () => {
     try {
       const response = await axios(
-        'http://localhost:5000/companies/getAllCompaniesForHR',
+        "http://localhost:5000/companies/getAllCompaniesForHR",
         {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            accesstoken: localStorage.getItem('accesstoken'),
+            "Content-Type": "application/json",
+            accesstoken: localStorage.getItem("accesstoken"),
           },
         }
       );
@@ -40,7 +40,7 @@ const AddJob = () => {
         setCompaniesName(companiesNameRes);
       }
     } catch (error) {
-      console.error('Error fetching companies', error);
+      console.error("Error fetching companies", error);
     }
   };
 
@@ -59,31 +59,31 @@ const AddJob = () => {
       seniorityLevel,
       jobDescription,
       salary,
-      technicalSkills: technicalSkills.split(','),
-      softSkills: softSkills.split(','),
+      technicalSkills: technicalSkills.split(","),
+      softSkills: softSkills.split(","),
       company,
     };
 
     console.log(newJob);
     try {
-      const response = await axios('http://localhost:5000/jobs/addJob', {
-        method: 'POST',
+      const response = await axios("http://localhost:5000/jobs/addJob", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          accesstoken: localStorage.getItem('accesstoken'),
+          "Content-Type": "application/json",
+          accesstoken: localStorage.getItem("accesstoken"),
         },
         data: newJob,
       });
 
-      if (response.status === 201) toast.success('Job Added Successfully');
-      return navigate('/company-hr-dashboard');
+      if (response.status === 201) toast.success("Job Added Successfully");
+      return navigate("/company-hr-dashboard");
     } catch (error) {
       if (error.response.status === 409) {
-        return toast.error('Job already exists please try again');
+        return toast.error("Job already exists please try again");
       } else if (error.response.status === 500) {
-        return toast.error('Job addition failed, please try again');
+        return toast.error("Job addition failed, please try again");
       } else {
-        return toast.error('Job addition failed, please try again');
+        return toast.error("Job addition failed, please try again");
       }
     }
   };

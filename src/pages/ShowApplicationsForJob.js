@@ -1,59 +1,24 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import NavbarHr from '../components/NavbarHr';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import NavbarHr from "../components/NavbarHr";
 
 const ShowApplicationsForJob = () => {
   const param = useParams();
   const [applications, setApplications] = useState([]);
-  const [userData, setUserData] = useState([]);
 
-  const usersId = [];
-  const usersProfile = [];
+  const accesstoken = localStorage.getItem("accesstoken").toString();
+
   const handleGetApplications = async () => {
-    try {
-      const response = await axios(
-        `http://localhost:5000/companies/getApplicationsForJobs/${param.id}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            accesstoken: localStorage.getItem('accesstoken'),
-          },
-        }
-      );
-      if (response.status === 200) {
-        await setApplications(response.data.data.applications);
-        applications.map(async (application) => {
-          return await usersId.push(application.userId);
-        });
-        for (const iterator of usersId) {
-          await getUserData(iterator);
-        }
-        setUserData(usersProfile);
-      }
-    } catch (error) {
-      toast.error('Error fetching applications', error);
-    }
-  };
-  const getUserData = async (userId) => {
-    try {
-      const response = await axios(
-        `http://localhost:5000/users/getProfileData/${userId}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            accesstoken: localStorage.getItem('accesstoken'),
-          },
-        }
-      );
-      usersProfile.push(response.data.user);
-    } catch (error) {
-      toast.error('Error fetching user data', error);
-      console.error('Error fetching user data', error);
-    }
+    const response = await axios.request({
+      method: "GET",
+      url: `http://localhost:5000/companies/getApplicationsForJobs/${param.id}`,
+      headers: {
+        "Content-Type": "application/json",
+        accesstoken,
+      },
+    });
+    setApplications(response.data.data);
   };
 
   useEffect(() => {
@@ -76,17 +41,16 @@ const ShowApplicationsForJob = () => {
                   key={index}
                   className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border"
                 >
-                  {console.log('userData', userData)}
                   <h3 className="text-xl">
-                    <b>User Name: </b> {userData[index]?.firstName}{' '}
-                    {userData[index]?.lastName}
+                    <b>First Name: </b> {application.userId.firstName}{" "}
+                    {application.userId.lastName}
                   </h3>
                   <p className="text-black">
                     <b>Email: </b>
-                    {userData[index]?.email}
+                    {application.userId.email}
                   </p>
                   <p className="text-black">
-                    <b>Phone Number: </b> {userData[index]?.mobileNumber}
+                    <b>Phone Number: </b> {application.userId.mobileNumber}
                   </p>
                   <p className="text-black">
                     <b>Resume: </b>
@@ -94,11 +58,11 @@ const ShowApplicationsForJob = () => {
                   </p>
                   <p className="text-black">
                     <b>User Tech Skills: </b>
-                    {application.userTechSkills.join(', ')}
+                    {application.userTechSkills.join(", ")}
                   </p>
                   <p className="text-black">
                     <b>User Soft Skills: </b>
-                    {application.userSoftSkills.join(', ')}
+                    {application.userSoftSkills.join(", ")}
                   </p>
                   <p className="text-black">
                     <b>Submited At: </b>
